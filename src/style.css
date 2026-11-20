@@ -1,0 +1,314 @@
+@import "tailwindcss";
+
+/* ---------- Fonts
+   seanthorne.co.uk's faces, self-hosted (OFL, licences in public/fonts) so the
+   app makes no third-party requests. Variable files: one per family per subset
+   covers every weight. */
+
+@font-face {
+  font-family: "Host Grotesk";
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url("/fonts/host-grotesk-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Host Grotesk";
+  font-style: normal;
+  font-weight: 300 800;
+  font-display: swap;
+  src: url("/fonts/host-grotesk-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Martian Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/fonts/martian-mono-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Martian Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/fonts/martian-mono-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* ---------- Tokens
+   Pastel palette: baby pink #FF99C8, lemon chiffon #FCF6BD, frosted mint
+   #D0F4DE, icy blue #A9DEF9, mauve #E4C1F9. All five are too light for text,
+   so in light mode they are fills only and text is a near-black ink.
+   - `live` is the mauve, used for graphics only (the wordmark dot, the pulse).
+   - `highlight` is the lemon: arrival flash, text selection.
+   - `surface` is the icy blue mixed into white.
+   - `add` / `del` are the mint and the pink, and the `code-*` values are
+     derived from them, so a row carries one hue each way. Light mode tints
+     rows with the pastels and uses deep green / deep pink for text; dark mode
+     uses the raw pastels as the text colours. `danger` shares `del`.
+   - `*-row` tints a changed line, `*-word` the changed words inside it. Both are
+     their own hue mixed into `bg`, kept clear of `highlight` so a changed line
+     never reads as something that just arrived.
+   All text pairs pass WCAG AA; `control` borders pass 3:1 against bg and surface. */
+
+:root {
+  color-scheme: light dark;
+  --bg: #FFFFFF;
+  --surface: #F2FAFE;
+  --ink: #1C1A22;
+  --muted: #5E5A68;
+  --rule: #E4E1EA;
+  --control: #8A8594;
+  --live: #E4C1F9;
+  --highlight: #FCF6BD;
+  --danger: #8E1450;
+  --add: #1D6238;
+  --del: #8E1450;
+  --add-row: #D0F4DE;
+  --del-row: #FFDBEC;
+  --add-word: #9FE4BA;
+  --del-word: #FF99C8;
+  --code-string: var(--add);
+  --code-literal: var(--del);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #18161D;
+    --surface: #211E27;
+    --ink: #F4F2F7;
+    --muted: #ABA6B5;
+    --rule: #2E2A35;
+    --control: #716B7C;
+    --live: #E4C1F9;
+    --highlight: #4A4740;
+    --danger: #FF99C8;
+    --add: #D0F4DE;
+    --del: #FF99C8;
+    --add-row: #23342F;
+    --del-row: #382835;
+    --add-word: #2D4E3F;
+    --del-word: #543849;
+    --code-string: var(--add);
+    --code-literal: var(--del);
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-rule: var(--rule);
+  --color-control: var(--control);
+  --color-live: var(--live);
+  --color-highlight: var(--highlight);
+  --color-danger: var(--danger);
+  --color-add: var(--add);
+  --color-del: var(--del);
+  --color-add-row: var(--add-row);
+  --color-del-row: var(--del-row);
+  --color-add-word: var(--add-word);
+  --color-del-word: var(--del-word);
+  --font-sans: "Host Grotesk", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "Martian Mono", ui-monospace, "SF Mono", "Cascadia Mono", Menlo, Consolas, monospace;
+  --radius-control: 3px;
+}
+
+/* Type scale: four UI sizes on round rem steps (14/16/20/24). No display size:
+   this tool's subject is the two texts, not a single value. */
+@theme {
+  --text-small: 0.875rem;      /* 14: captions, hints, metadata, small buttons */
+  --text-small--line-height: 1.375rem;
+  --text-body: 1rem;           /* 16: labels, buttons, everything else in the UI */
+  --text-body--line-height: 1.5rem;
+  --text-mark: 1.25rem;        /* 20: wordmark */
+  --text-mark--line-height: 1.75rem;
+  --text-entry: 1.5rem;        /* 24: primary single-value input */
+  --text-entry--line-height: 2rem;
+}
+
+/* ---------- Motion
+   Short, physical, and tied to something happening. Everything here is
+   switched off by the reduced-motion rule in base, and every keyframe animates
+   *from* a hidden state, so with motion off things simply appear. */
+@theme {
+  --animate-fall: fall 900ms both;
+  --animate-rise: rise 380ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  --animate-slide-down: slide-down 320ms cubic-bezier(0.2, 0.9, 0.3, 1) both;
+  --animate-drop-in: drop-in 440ms cubic-bezier(0.25, 1.35, 0.5, 1) both;
+  --animate-arrive: drop-in 440ms cubic-bezier(0.25, 1.35, 0.5, 1) both, flash 1800ms ease-out;
+  --animate-pop: pop 280ms cubic-bezier(0.3, 1.6, 0.5, 1) both;
+  --animate-beat: beat 2s ease-out infinite;
+  --animate-blink: blink 900ms ease-in-out infinite alternate;
+
+  /* The wordmark's full stop: falls, bounces twice, settles */
+  @keyframes fall {
+    0% { transform: translateY(-1.6em); opacity: 0; animation-timing-function: cubic-bezier(0.5, 0, 1, 0.6); }
+    40% { transform: translateY(0); opacity: 1; animation-timing-function: cubic-bezier(0, 0.4, 0.5, 1); }
+    60% { transform: translateY(-0.35em); animation-timing-function: cubic-bezier(0.5, 0, 1, 0.6); }
+    76% { transform: translateY(0); animation-timing-function: cubic-bezier(0, 0.4, 0.5, 1); }
+    88% { transform: translateY(-0.1em); animation-timing-function: cubic-bezier(0.5, 0, 1, 0.6); }
+    100% { transform: translateY(0); }
+  }
+  @keyframes rise { from { opacity: 0; transform: translateY(8px); } }
+  @keyframes slide-down { from { opacity: 0; transform: translateY(-8px); } }
+  @keyframes drop-in { from { opacity: 0; transform: translateY(-14px); } }
+  /* Highlighter pass on new rows; side shadows widen it without moving the rules */
+  @keyframes flash {
+    from { background-color: var(--highlight); box-shadow: -12px 0 0 var(--highlight), 12px 0 0 var(--highlight); }
+  }
+  @keyframes pop { from { opacity: 0; transform: scale(0.85); } }
+  @keyframes beat {
+    from { box-shadow: 0 0 0 0 color-mix(in srgb, var(--live) 55%, transparent); }
+    70%, to { box-shadow: 0 0 0 6px transparent; }
+  }
+  @keyframes blink { to { opacity: 0.25; } }
+}
+
+/* ---------- Base */
+
+@layer base {
+  /* Page behind a full-screen dialog should not scroll */
+  html:has(dialog[open]) {
+    overflow: hidden;
+  }
+
+  :focus-visible,
+  label:has(> input:focus-visible) {
+    outline: 2px solid var(--ink);
+    outline-offset: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      transition: none !important;
+      animation: none !important;
+    }
+  }
+}
+
+/* ---------- Components */
+
+@layer components {
+  /* Section label: sentence case, carries hierarchy by weight, not size */
+  .label {
+    @apply text-body font-semibold text-ink;
+  }
+
+  .caption {
+    @apply text-small text-muted;
+  }
+
+  .btn {
+    @apply inline-flex h-10 cursor-pointer items-center justify-center gap-2 rounded-control px-4 text-body font-semibold whitespace-nowrap transition-[color,background-color,border-color,scale] duration-150 select-none not-disabled:active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-45;
+  }
+  .btn-sm {
+    @apply h-8 px-3 text-small;
+  }
+  .btn-lg {
+    @apply h-12 px-5 text-body;
+  }
+  .btn-primary {
+    @apply bg-ink text-bg not-disabled:hover:bg-ink/85 not-disabled:active:bg-ink/75;
+  }
+  .btn-secondary {
+    @apply border border-control text-ink not-disabled:hover:border-ink not-disabled:hover:bg-ink/5 not-disabled:active:bg-ink/10;
+  }
+
+  .field {
+    @apply rounded-control border border-control bg-surface text-ink transition-colors placeholder:text-muted hover:border-ink focus-visible:border-ink focus-visible:outline-offset-0;
+  }
+}
+
+/* ---------- Syntax highlighting (highlight.js; delete if the tool shows no code)
+   Restrained on purpose: most code stays ink. Weight marks structure, colour
+   marks values, muted marks what you can skim past. No italics: Martian Mono
+   has none and synthetic obliques look broken. */
+
+@layer components {
+  .hljs-keyword, .hljs-selector-tag, .hljs-name, .hljs-section, .hljs-doctag {
+    @apply font-bold;
+  }
+  .hljs-title, .hljs-title.function_, .hljs-title.class_, .hljs-type {
+    @apply font-semibold;
+  }
+  .hljs-string, .hljs-regexp, .hljs-template-tag, .hljs-addition, .hljs-selector-attr {
+    color: var(--code-string);
+  }
+  .hljs-number, .hljs-literal, .hljs-symbol, .hljs-bullet, .hljs-deletion, .hljs-variable.constant_ {
+    color: var(--code-literal);
+  }
+  .hljs-comment, .hljs-quote, .hljs-meta, .hljs-punctuation {
+    @apply text-muted;
+  }
+}
+
+/* ---------- Diff view
+   The whole diff is one grid, not a grid per row, so the two sides line up by
+   themselves: cells in the same grid row are always the same height, whatever
+   either of them contains. The columns split the pane evenly and a long line
+   wraps inside its own half rather than scrolling the pane sideways, which would
+   push the other half off the screen. */
+
+@layer components {
+  .diff-grid {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr) auto minmax(0, 1fr);
+    tab-size: 4;
+  }
+  [data-view="unified"] .diff-grid {
+    grid-template-columns: auto auto minmax(0, 1fr);
+  }
+
+  .diff-num {
+    @apply border-r border-rule px-3 text-right text-muted tabular-nums select-none;
+  }
+  /* Prev/Next land on a row's first cell: keep its ring inside the cell rather
+     than drawing over the line beside it */
+  .diff-num:focus-visible {
+    outline-offset: -2px;
+  }
+  .diff-code {
+    @apply py-px pr-4 pl-9 whitespace-pre-wrap wrap-anywhere;
+    /* Matches the sign's width, so a wrapped line lands under the code above it */
+    text-indent: -1.25rem;
+  }
+  .diff-sign {
+    @apply inline-block w-5 font-bold select-none;
+  }
+  .diff-head {
+    text-indent: 0;
+    @apply border-b border-rule bg-surface py-1.5;
+  }
+
+  /* Row tints mark the line, word tints mark what moved inside it, and a gap is
+     the other side having no line at all. */
+  .is-add { background-color: var(--add-row); }
+  .is-del { background-color: var(--del-row); }
+  .is-gap { @apply bg-ink/5; }
+  .word-add { background-color: var(--add-word); }
+  .word-del { background-color: var(--del-word); }
+
+  /* Collapsed run of identical lines */
+  .diff-fold {
+    grid-column: 1 / -1;
+    @apply flex cursor-pointer items-center gap-2 border-y border-rule bg-surface px-3 py-1.5 text-left font-sans text-small text-muted transition-colors hover:bg-ink/5 hover:text-ink;
+  }
+
+  /* A two-state button: secondary at rest, ink once it is on. aria-pressed
+     carries the state, so it is never colour alone. */
+  .btn-toggle {
+    @apply border border-control text-ink not-disabled:hover:border-ink not-disabled:hover:bg-ink/5;
+  }
+  /* Written out so the pressed state outranks the hover above it */
+  .btn-toggle[aria-pressed="true"]:not(:disabled) {
+    @apply border-ink bg-ink text-bg;
+  }
+  .btn-toggle[aria-pressed="true"]:not(:disabled):hover {
+    @apply bg-ink/85;
+  }
+}

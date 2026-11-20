@@ -1,0 +1,4 @@
+<!-- Favicon formula: 32x32, ink rounded square (rx 4), the glyph in paper,
+     exactly one element in the accent. Keep it to two or three shapes so it
+     survives 16px. Here: the two sides, and the one line that differs. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><rect width="32" height="32" rx="4" fill="#1C1A22"/><rect x="15" y="6" width="2" height="20" fill="#FFFFFF"/><rect x="6" y="11" width="6" height="2.5" fill="#FFFFFF"/><rect x="20" y="18.5" width="6" height="2.5" fill="#FF99C8"/></svg>

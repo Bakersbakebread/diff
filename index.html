@@ -1,0 +1,101 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="color-scheme" content="light dark" />
+  <title>diff.seanthorne.co.uk</title>
+  <meta name="description" content="Compare two pieces of text or code in the browser. Side by side or unified, with word-level changes and syntax highlighting." />
+  <link rel="preload" href="/fonts/host-grotesk-latin.woff2" as="font" type="font/woff2" crossorigin />
+  <link rel="preload" href="/fonts/martian-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+</head>
+<body class="min-h-dvh bg-bg font-sans text-body text-ink antialiased selection:bg-highlight">
+<!-- Full width, not the 3xl reading column the other tools use: two columns of
+     code take all the room they are given. Prose inside it is still held to a
+     readable measure with max-w-prose. -->
+<main class="flex min-h-dvh flex-col gap-10 px-5 py-5 sm:px-8 sm:py-8">
+  <header class="flex min-h-13 flex-wrap items-center gap-x-4 gap-y-2 border-b border-rule pb-4">
+    <h1 class="font-mono text-body font-bold sm:text-mark">diff<span class="inline-block animate-fall text-live">.</span><a
+            href="https://seanthorne.co.uk"
+            target="_blank"
+            rel="noopener"
+            class="font-normal text-muted underline-offset-4 hover:text-ink hover:underline"
+    >seanthorne.co.uk</a></h1>
+    <p id="status" role="status" class="order-3 w-full text-muted tabular-nums sm:order-2 sm:ml-auto sm:w-auto">Paste two texts to compare</p>
+  </header>
+
+  <!-- The two texts -->
+  <section id="editor" class="flex flex-col gap-5">
+    <div class="grid gap-5 md:grid-cols-2 md:gap-8">
+      <div class="flex animate-rise flex-col gap-3">
+        <div class="flex items-center gap-3">
+          <label for="a-input" class="label">Original</label>
+          <label class="btn btn-sm btn-secondary ml-auto">
+            Load file
+            <input id="a-file" type="file" class="sr-only" />
+          </label>
+        </div>
+        <textarea
+                id="a-input"
+                rows="10"
+                spellcheck="false"
+                placeholder="Paste the first version…"
+                class="field resize-y p-3 font-mono text-base sm:text-small"
+        ></textarea>
+      </div>
+
+      <div class="flex animate-rise flex-col gap-3 border-t border-rule pt-5 [animation-delay:60ms] md:border-t-0 md:border-l md:pt-0 md:pl-8">
+        <div class="flex items-center gap-3">
+          <label for="b-input" class="label">Changed</label>
+          <label class="btn btn-sm btn-secondary ml-auto">
+            Load file
+            <input id="b-file" type="file" class="sr-only" />
+          </label>
+        </div>
+        <textarea
+                id="b-input"
+                rows="10"
+                spellcheck="false"
+                placeholder="Paste the second version…"
+                class="field resize-y p-3 font-mono text-base sm:text-small"
+        ></textarea>
+      </div>
+    </div>
+
+    <div class="flex flex-wrap items-center gap-2">
+      <button id="compare-btn" type="button" class="btn btn-primary">Compare</button>
+      <button id="swap-btn" type="button" class="btn btn-secondary">Swap</button>
+      <button id="clear-btn" type="button" class="btn btn-secondary">Clear</button>
+      <button id="ws-btn" type="button" aria-pressed="false" class="btn btn-sm btn-toggle sm:ml-auto">Ignore whitespace</button>
+    </div>
+
+    <p class="caption max-w-prose">
+      Ctrl+Enter compares. Everything happens in this tab: nothing is uploaded, nothing is stored, and
+      reloading the page clears both texts.
+    </p>
+  </section>
+
+  <!-- Result -->
+  <section id="result" hidden class="flex flex-col gap-4">
+    <div class="flex flex-wrap items-center gap-x-4 gap-y-2 border-b border-rule pb-2">
+      <button id="edit-btn" type="button" class="btn btn-sm btn-secondary">Edit texts</button>
+      <h2 class="label">Differences</h2>
+      <p id="stats" class="text-small text-muted tabular-nums"></p>
+      <div class="ml-auto flex gap-2">
+        <button id="prev-btn" type="button" class="btn btn-sm btn-secondary" title="Previous change">Prev</button>
+        <button id="next-btn" type="button" class="btn btn-sm btn-secondary" title="Next change">Next</button>
+        <button id="split-btn" type="button" aria-pressed="true" class="btn btn-sm btn-toggle">Side by side</button>
+        <button id="unified-btn" type="button" aria-pressed="false" class="btn btn-sm btn-toggle">Unified</button>
+      </div>
+    </div>
+
+    <div id="diff" class="border-y border-rule font-mono text-small"></div>
+
+    <p id="result-note" class="caption max-w-prose"></p>
+  </section>
+</main>
+
+<script type="module" src="/src/main.ts"></script>
+</body>
+</html>
